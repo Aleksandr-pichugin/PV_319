@@ -55,6 +55,6 @@ void main()
 	List <double> d_list = { 2.7,3.14 };
 	for (double i : d_list)cout << i << tab; cout << endl;
 
-	List <std::string> s_list = { "хорошо","живет","на" };
+	List <std::string> s_list = { "хорошо","живет","на" ,"свете"};
 	for (std::string i : s_list)cout << i << tab; cout << endl;
 }
