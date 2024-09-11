@@ -28,6 +28,7 @@ public:
 	}
 	friend class ForwardList;
 	friend class Iterator;
+	friend class Stack;
 };
 
 int Element::count = 0;
@@ -38,11 +39,11 @@ class Iterator
 public:
 	Iterator(Element* Temp = nullptr) :Temp(Temp)
 	{
-		cout << "ItConstructor:\t" << this << endl;
+		//cout << "ItConstructor:\t" << this << endl;
 	}
 	~Iterator()
 	{
-		cout << "ItDestructor:\t" << this << endl;
+		//cout << "ItDestructor:\t" << this << endl;
 	}
 
 	Iterator& operator++()
@@ -64,6 +65,7 @@ public:
 
 class ForwardList
 {
+protected:
 	Element* Head;
 	unsigned int size;
 public:
@@ -80,7 +82,7 @@ public:
 	{
 		Head = nullptr; //Когда список пуст, его Голова указывает на 0
 		size = 0;
-		cout << "LConstructor:\t" << this << endl;
+		//cout << "LConstructor:\t" << this << endl;
 	}
 	ForwardList(const std::initializer_list<int>& il) :ForwardList()
 	{
@@ -102,13 +104,13 @@ public:
 		/*for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
 			push_back(Temp->Data);*/
 		*this = other;	//здесь просто вызываем CopyAssignment
-		cout << "LCopyConstructor:" << this << endl;
+		//cout << "LCopyConstructor:" << this << endl;
 	}
 	~ForwardList()
 	{
 		while (Head)pop_front();
 		pop_back();
-		cout << "LDestructor:\t" << this << endl;
+		//cout << "LDestructor:\t" << this << endl;
 	}
 
 	//				Operators:
@@ -119,7 +121,7 @@ public:
 		for (Element* Temp = other.Head; Temp; Temp = Temp->pNext)
 			push_front(Temp->Data);
 		reverse();
-		cout << "LCopyAssignment:" << this << endl;
+		//cout << "LCopyAssignment:" << this << endl;
 		return *this;
 	}
 
@@ -252,6 +254,56 @@ public:
 	}
 };
 
+class Stack :ForwardList
+{
+public:
+	const int& top()const
+	{
+		return Head->Data;
+	}
+	int& top()
+	{
+		return Head->Data;
+	}
+	int push(int Data)
+	{
+		push_front(Data);
+
+		return Head->Data;
+		}
+	int pop()
+	{
+		int Data = Head->Data;
+		pop_front();
+		return Data;
+	}
+	int size()const
+	{
+		return ForwardList::size;
+	}
+	bool empty()const
+	{
+		return Head == nullptr;
+	}
+	void swap(Stack& other)
+	{
+		Element* bufferHead = this->Head;
+		this->Head = other.Head;
+		other.Head = bufferHead;
+
+		int bufferSize = this->size();
+		this->ForwardList::size = other.size();
+		other.ForwardList::size = bufferSize;
+	}
+	void info()const
+	{
+		cout << "\n-------------------------------------\n";
+		cout << this << ":\n";
+		cout << "Size: " << size << endl;
+		for (int i : ForwardList(*this))cout << i << tab; cout << endl;
+	}
+};
+
 void Print(int arr[])
 {
 	cout << typeid(arr).name() << endl;
@@ -272,7 +324,7 @@ void Print(int arr[])
 //#define COUNT_CHECK
 //#define PERFORMANCE_CHECK
 //#define RANGE_BASED_FOR_ARRAY
-#define RANGE_BASED_FOR_LIST
+//#define RANGE_BASED_FOR_LIST
 
 void main()
 {
@@ -373,4 +425,22 @@ void main()
 	cout << endl;
 #endif // RANGE_BASED_FOR_LIST
 
+	Stack stack;
+	stack.push(3);
+	stack.push(5);
+	stack.push(8);
+	stack.push(13);
+	stack.push(21); 
+		cout << stack.size() << endl;
+		/*while (!stack.empty())
+		{
+			cout << stack.pop() << tab;
+		}
+		cout << endl;*/
+
+		Stack stack2;
+		stack2.push(34);
+		stack2.push(55);
+		stack2.push(89);
+		stack2.info();
 }
