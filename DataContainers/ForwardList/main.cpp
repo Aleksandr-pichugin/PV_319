@@ -442,5 +442,12 @@ void main()
 		stack2.push(34);
 		stack2.push(55);
 		stack2.push(89);
+
+		stack.info();
+		stack2.info();
+
+		stack.swap(stack2);
+
+		stack.info();
 		stack2.info();
 }
